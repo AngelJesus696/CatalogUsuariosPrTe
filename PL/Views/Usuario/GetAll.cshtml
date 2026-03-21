@@ -1,0 +1,196 @@
+﻿@model ML.Usuario
+@{
+    ViewBag.Title = "GetAll";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>GetAll</h2>
+<div class="container">
+    <div class="row">
+        <div>
+            <a class="btn btn-outline-success" onclick="Modal(0)">
+                Agregar
+            </a>
+        </div>
+    </div>
+    @if (Model.Usuarios != null)
+    {
+        <div class="table-bordered">
+            <table class="table-responsive table-bordered">
+                <thead>
+                    <tr>
+                        <td>Acciones</td>
+                        <td>Nombre completo</td>
+                        <td>UserName</td>
+                        <td>PassWord</td>
+                        <td>Correo</td>
+                        <td>Estatus</td>
+                        <td>Fecha de Alta</td>
+                        <td>Fecha de Modificacion</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (ML.Usuario usuario in Model.Usuarios)
+                    {
+                        <tr>
+                            <td>
+                                <botton class="btn btn-warning" onclick="Modal(@usuario.IdUsuario)">
+                                    Editar
+                                </botton>
+                                <a>
+
+                                </a>
+                            </td>
+                            <td>@usuario.Nombre @usuario.ApellidoPaterno @usuario.ApellidoMaterno</td>
+                            <td>@usuario.UserName</td>
+                            <td>@usuario.Password</td>
+                            <td>@usuario.Correo</td>
+                            <td>@usuario.Estatus</td>
+                            <td>@usuario.FechaAlta</td>
+                            @if (usuario.FechaModificacion == null)
+                            {
+                                <td></td>
+                            }
+                            else
+                            {
+                                <td>@usuario.FechaModificacion</td>
+                            }
+                        </tr>
+                    }
+
+
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div>Agrega un usuario</div>
+    }
+</div>
+<!-- Modal -->
+<div class="modal fade" id="Modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                @Html.Hidden("hiden", "", new { id = "hidden" })
+                @Html.TextBox("Nombre", "", new { @class = "form-control", placeholder = "Nombre", id = "inptNombre" })
+                <div class="divN"></div>
+                @Html.TextBox("AP", "", new { @class = "form-control", placeholder = "ApellidoPaterno", id = "inptAP" })
+                <div class="divAp"></div>
+                @Html.TextBox("AM", "", new { @class = "form-control", placeholder = "ApellidoMaterno", id = "inptAM" })
+                <div class="divAm"></div>
+                @Html.TextBox("UserName", "", new { @class = "form-control", placeholder = "UserName", id = "inptUserName" })
+                <div class="divU"></div>
+                @Html.TextBox("Password", "", new { @class = "form-control", placeholder = "Password", id = "inptPassword" })
+                <div class="divP"></div>
+                @Html.TextBox("Correo", "", new { @class = "form-control", placeholder = "Correo", id = "inptCorreo" })
+                <div class="divC"></div>
+                @Html.TextBox("inptEstatus", "", new { @class = "form-control", placeholder = "Estatus", id = "inptEstatus" })
+                <div class="divE"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" onclick="AddoUpdate()" class="btn btn-primary">Understood</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/bootstrap.js"></script>
+<script>
+    function Modal(id) {
+        var modal = $('#Modal')
+        if (id > 0) {
+            console.log("editar")
+        } else {
+            modal.modal('show')
+            console.log("agregar")
+        }
+    }
+    function AddoUpdate() {
+        var Hidden = $('#hidden').val()
+        var nombre = $('#inptNombre').val()
+        var ApellidoP = $('#inptAP').val()
+        var ApellidoM= $('#inptAM').val()
+        var User = $('#inptUserName').val()
+        var Passw = $('#inptPassword').val()
+        var Correo = $('#inptCorreo').val()
+        var Estatus = $('#inptEstatus').val()
+        var regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{9,}$/
+        var usuario = {
+            IdUsuario: Hidden,
+            Nombre: nombre,
+            ApellidoPaterno: ApellidoP,
+            ApellidoMaterno: ApellidoM,
+            UserName: User,
+            Password: Passw,
+            Correo: Correo,
+            Estatus: Estatus
+        }
+        if (Hidden > 0) {
+
+        } else {
+            console.log('Hidden:', Hidden);
+            console.log('nombre:', nombre);
+            console.log('ApellidoP:', ApellidoP);
+            console.log('ApellidoM:', ApellidoM);
+            console.log('User:', User);
+            console.log('Passw:', Passw);
+            console.log('Correo:', Correo);
+            console.log('Estatus:', Estatus);
+            let valido = true;
+
+            
+            $('.divN, .divAp, .divAm, .divU, .divP, .divC, .divE')
+                .text('');
+
+            if (nombre === '') {
+                $('.divN').text("No puede estar vacio").css('color','red');
+                valido = false;
+            }
+
+            if (ApellidoP === '') {
+                $('.divAp').text("No puede estar vacio").css('color', 'red');
+                valido = false;
+            }
+
+            if (ApellidoM === '') {
+                $('.divAm').text("No puede estar vacio").css('color', 'red');
+                valido = false;
+            }
+
+            if (User === '') {
+                $('.divU').text("No puede estar vacio").css('color', 'red');
+                valido = false;
+            }
+
+            if (!regex.test(Passw)) {
+                $('.divP').text("No cumple con los requisitos").css('color', 'red');
+                valido = false;
+            }
+
+            if (Correo === '') {
+                $('.divC').text("No puede estar vacio").css('color', 'red');
+                valido = false;
+            }
+
+            if (Estatus === '') {
+                $('.divE').text("No puede estar vacio").css('color', 'red');
+                valido = false;
+            }
+
+            if (valido) {
+               $.ajax({
+                    url: '@Url.Action("Add","Usuario")',
+                    type: 'POST',
+                    data: usuario
+                })
+            }
+        }
+    }
+</script>
+

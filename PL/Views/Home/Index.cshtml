@@ -1,0 +1,37 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="container">
+    <div class="row">
+        <div>
+            <label class="text-center">
+                Ingresa la contraseña
+            </label>
+            <div>
+                @Html.TextBox("Password", "", new {@class="form-control", placeholder = "Password", id="InptPass"})
+                <div class="mt-2" id="divMsg"></div>
+            </div>
+            <div>
+                <button onclick="Validacion()" class="btn btn-outline-success">
+                    Ingresar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/jquery-3.7.0.js"></script>
+<script>
+    function Validacion() {
+        var password = $('#InptPass').val()
+        var divMsg = $('#divMsg')
+        var url = '@Url.Action("GetAll", "Usuario")'
+        if (password == "password01$") {
+            window.location.href = url
+        } else {
+            divMsg.text("Contraseña incorrecta")
+        }
+    }
+
+</script>
