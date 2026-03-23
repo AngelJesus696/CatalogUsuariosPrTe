@@ -21,11 +21,27 @@ namespace PL.Controllers
             }
             return View(usuario);
         }
+        public ActionResult Delete(int IdUsuario)
+        {
+            ML.Result result = BL.Usuario.Delete(IdUsuario);
+            return RedirectToAction("GetAll");
+        }
         [HttpPost]
         public JsonResult Add(ML.Usuario usuario)
         {
             ML.Result result= BL.Usuario.Add(usuario);
             return Json(result);
+        }
+        public JsonResult Update(ML.Usuario usuario)
+        {
+            ML.Result result= BL.Usuario.Update(usuario);
+            return Json(result);
+        }
+        public JsonResult GetbyID(int IdUsuario)
+        {
+            ML.Result result = BL.Usuario.GetById(IdUsuario);
+
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
     }
 }

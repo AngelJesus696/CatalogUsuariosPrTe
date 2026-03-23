@@ -41,7 +41,7 @@ namespace BL
             {
                 using (DL.CatalogoUsuariosEntities context = new DL.CatalogoUsuariosEntities())
                 {
-                    int filaAfectada = context.UsuarioUpdate(usuario.Nombre, usuario.ApellidoPaterno, usuario.ApellidoMaterno, usuario.UserName, Encoding.ASCII.GetBytes(usuario.Password), usuario.Correo, usuario.Estatus, DateTime.Now);
+                    int filaAfectada = context.UsuarioUpdate(usuario.IdUsuario ,usuario.Nombre, usuario.ApellidoPaterno, usuario.ApellidoMaterno, usuario.UserName, Encoding.ASCII.GetBytes(usuario.Password), usuario.Correo, usuario.Estatus, DateTime.Now);
                     if (filaAfectada > 0)
                     {
                         result.Correct = true;
@@ -130,8 +130,15 @@ namespace BL
                         usuario.Correo = Usuario.Correo;
                         usuario.Estatus = Usuario.Estatus;
                         usuario.FechaAlta = Usuario.FechaAlta;
-                        usuario.FechaModificacion = Usuario.FechaModificacion.Value;
+                        if (Usuario.FechaModificacion == null)
+                        {
 
+                        }
+                        else
+                        {
+                            usuario.FechaModificacion = Usuario.FechaModificacion.Value;
+                        }
+                        result.Object = usuario;
                         result.Correct = true;
                     }
                     else

@@ -16,7 +16,7 @@
     @if (Model.Usuarios != null)
     {
         <div class="table-bordered">
-            <table class="table-responsive table-bordered">
+            <table class="table table-responsive table-bordered">
                 <thead>
                     <tr>
                         <td>Acciones</td>
@@ -37,8 +37,8 @@
                                 <botton class="btn btn-warning" onclick="Modal(@usuario.IdUsuario)">
                                     Editar
                                 </botton>
-                                <a>
-
+                                <a class="btn btn-danger" href="@Url.Action("Delete","Usuario", new {IdUsuario = usuario.IdUsuario})">
+                                    Eliminar
                                 </a>
                             </td>
                             <td>@usuario.Nombre @usuario.ApellidoPaterno @usuario.ApellidoMaterno</td>
@@ -104,9 +104,43 @@
 <script>
     function Modal(id) {
         var modal = $('#Modal')
+        var Hidden = $('#hidden')
+        var nombre = $('#inptNombre')
+        var ApellidoP = $('#inptAP')
+        var ApellidoM = $('#inptAM')
+        var User = $('#inptUserName')
+        var Passw = $('#inptPassword')
+        var Correo = $('#inptCorreo')
+        var Estatus = $('#inptEstatus')
         if (id > 0) {
-            console.log("editar")
+            $.ajax({
+                url: '@Url.Action("GetbyID", "Usuario")?IdUsuario=' + id,
+                type: "GET",
+                success: function(result) {
+                    console.log(result)
+                    if (result.Correct) {
+                    var Object = result.Object
+                        Hidden.val(Object.IdUsuario)
+                        nombre.val(Object.Nombre)
+                        ApellidoP.val(Object.ApellidoPaterno)
+                        ApellidoM.val(Object.ApellidoMaterno)
+                        User.val(Object.UserName)
+                        Passw.val(Object.Password)
+                        Correo.val(Object.Correo)
+                        Estatus.val(Object.Estatus)
+                        modal.modal("show")
+                    }
+                }
+            })
         } else {
+            Hidden.val("")
+            nombre.val("")
+            ApellidoP.val("")
+            ApellidoM.val("")
+            User.val("")
+            Passw.val("")
+            Correo.val("")
+            Estatus.val("")
             modal.modal('show')
             console.log("agregar")
         }
@@ -120,6 +154,7 @@
         var Passw = $('#inptPassword').val()
         var Correo = $('#inptCorreo').val()
         var Estatus = $('#inptEstatus').val()
+        var modal = $('#Modal')
         var regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{9,}$/
         var usuario = {
             IdUsuario: Hidden,
@@ -132,62 +167,94 @@
             Estatus: Estatus
         }
         if (Hidden > 0) {
-
-        } else {
-            console.log('Hidden:', Hidden);
-            console.log('nombre:', nombre);
-            console.log('ApellidoP:', ApellidoP);
-            console.log('ApellidoM:', ApellidoM);
-            console.log('User:', User);
-            console.log('Passw:', Passw);
-            console.log('Correo:', Correo);
-            console.log('Estatus:', Estatus);
             let valido = true;
-
-            
             $('.divN, .divAp, .divAm, .divU, .divP, .divC, .divE')
                 .text('');
-
             if (nombre === '') {
-                $('.divN').text("No puede estar vacio").css('color','red');
+                $('.divN').text("No puede estar vacio").css('color', 'red');
                 valido = false;
             }
-
             if (ApellidoP === '') {
                 $('.divAp').text("No puede estar vacio").css('color', 'red');
                 valido = false;
             }
-
             if (ApellidoM === '') {
                 $('.divAm').text("No puede estar vacio").css('color', 'red');
                 valido = false;
             }
-
             if (User === '') {
                 $('.divU').text("No puede estar vacio").css('color', 'red');
                 valido = false;
             }
-
             if (!regex.test(Passw)) {
                 $('.divP').text("No cumple con los requisitos").css('color', 'red');
                 valido = false;
             }
-
             if (Correo === '') {
                 $('.divC').text("No puede estar vacio").css('color', 'red');
                 valido = false;
             }
-
             if (Estatus === '') {
                 $('.divE').text("No puede estar vacio").css('color', 'red');
                 valido = false;
             }
+            if (valido) {
+                $.ajax({
+                    url: '@Url.Action("Update", "Usuario")',
+                    type: "POST",
+                    data: usuario,
+                    success: function (result) {
+                        console.log(result)
+                        if (result.Correct) {
+                            modal.modal("hide")
+                            location.reload()
+                        }
+                    }
+                })
+            }
 
+        } else {
+            let valido = true;
+            $('.divN, .divAp, .divAm, .divU, .divP, .divC, .divE')
+                .text('');
+            if (nombre === '') {
+                $('.divN').text("No puede estar vacio").css('color','red');
+                valido = false;
+            }
+            if (ApellidoP === '') {
+                $('.divAp').text("No puede estar vacio").css('color', 'red');
+                valido = false;
+            }
+            if (ApellidoM === '') {
+                $('.divAm').text("No puede estar vacio").css('color', 'red');
+                valido = false;
+            }
+            if (User === '') {
+                $('.divU').text("No puede estar vacio").css('color', 'red');
+                valido = false;
+            }
+            if (!regex.test(Passw)) {
+                $('.divP').text("No cumple con los requisitos").css('color', 'red');
+                valido = false;
+            }
+            if (Correo === '') {
+                $('.divC').text("No puede estar vacio").css('color', 'red');
+                valido = false;
+            }
+            if (Estatus === '') {
+                $('.divE').text("No puede estar vacio").css('color', 'red');
+                valido = false;
+            }
             if (valido) {
                $.ajax({
                     url: '@Url.Action("Add","Usuario")',
                     type: 'POST',
-                    data: usuario
+                   data: usuario,
+                    success: function (result) {
+                        if (result.Correct) {
+                            location.reload()
+                        }
+                    }
                 })
             }
         }

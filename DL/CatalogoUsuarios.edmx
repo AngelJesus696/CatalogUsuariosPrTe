@@ -38,6 +38,7 @@
           <Parameter Name="IdUsuario" Type="int" Mode="In" />
         </Function>
         <Function Name="UsuarioUpdate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdUsuario" Type="int" Mode="In" />
           <Parameter Name="Nombre" Type="varchar" Mode="In" />
           <Parameter Name="ApellidoPaterno" Type="varchar" Mode="In" />
           <Parameter Name="ApellidoMaterno" Type="varchar" Mode="In" />
@@ -84,7 +85,12 @@
           <FunctionImport Name="UsuarioDelete">
           <Parameter Name="IdUsuario" Mode="In" Type="Int32" />
           </FunctionImport>
+          <FunctionImport Name="UsuarioGetAll" ReturnType="Collection(CatalogoUsuariosModel.UsuarioGetAll_Result)" />
+          <FunctionImport Name="UsuarioGetById" ReturnType="Collection(CatalogoUsuariosModel.UsuarioGetById_Result)">
+          <Parameter Name="IdUsuario" Mode="In" Type="Int32" />
+          </FunctionImport>
           <FunctionImport Name="UsuarioUpdate">
+            <Parameter Name="IdUsuario" Mode="In" Type="Int32" />
             <Parameter Name="Nombre" Mode="In" Type="String" />
             <Parameter Name="ApellidoPaterno" Mode="In" Type="String" />
             <Parameter Name="ApellidoMaterno" Mode="In" Type="String" />
@@ -93,10 +99,6 @@
             <Parameter Name="Correo" Mode="In" Type="String" />
             <Parameter Name="Estatus" Mode="In" Type="Boolean" />
             <Parameter Name="FechaModificacion" Mode="In" Type="DateTime" />
-          </FunctionImport>
-          <FunctionImport Name="UsuarioGetAll" ReturnType="Collection(CatalogoUsuariosModel.UsuarioGetAll_Result)" />
-          <FunctionImport Name="UsuarioGetById" ReturnType="Collection(CatalogoUsuariosModel.UsuarioGetById_Result)">
-            <Parameter Name="IdUsuario" Mode="In" Type="Int32" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="UsuarioGetAll_Result">
@@ -147,7 +149,6 @@
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="UsuarioADD" FunctionName="CatalogoUsuariosModel.Store.UsuarioADD" />
           <FunctionImportMapping FunctionImportName="UsuarioDelete" FunctionName="CatalogoUsuariosModel.Store.UsuarioDelete" />
-          <FunctionImportMapping FunctionImportName="UsuarioUpdate" FunctionName="CatalogoUsuariosModel.Store.UsuarioUpdate" />
           <FunctionImportMapping FunctionImportName="UsuarioGetAll" FunctionName="CatalogoUsuariosModel.Store.UsuarioGetAll">
             <ResultMapping>
               <ComplexTypeMapping TypeName="CatalogoUsuariosModel.UsuarioGetAll_Result">
@@ -180,6 +181,7 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="UsuarioUpdate" FunctionName="CatalogoUsuariosModel.Store.UsuarioUpdate" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

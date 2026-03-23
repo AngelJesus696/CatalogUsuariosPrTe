@@ -75,8 +75,26 @@ namespace DL
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("UsuarioDelete", idUsuarioParameter);
         }
     
-        public virtual int UsuarioUpdate(string nombre, string apellidoPaterno, string apellidoMaterno, string userName, byte[] password, string correo, Nullable<bool> estatus, Nullable<System.DateTime> fechaModificacion)
+        public virtual ObjectResult<UsuarioGetAll_Result> UsuarioGetAll()
         {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<UsuarioGetAll_Result>("UsuarioGetAll");
+        }
+    
+        public virtual ObjectResult<UsuarioGetById_Result> UsuarioGetById(Nullable<int> idUsuario)
+        {
+            var idUsuarioParameter = idUsuario.HasValue ?
+                new ObjectParameter("IdUsuario", idUsuario) :
+                new ObjectParameter("IdUsuario", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<UsuarioGetById_Result>("UsuarioGetById", idUsuarioParameter);
+        }
+    
+        public virtual int UsuarioUpdate(Nullable<int> idUsuario, string nombre, string apellidoPaterno, string apellidoMaterno, string userName, byte[] password, string correo, Nullable<bool> estatus, Nullable<System.DateTime> fechaModificacion)
+        {
+            var idUsuarioParameter = idUsuario.HasValue ?
+                new ObjectParameter("IdUsuario", idUsuario) :
+                new ObjectParameter("IdUsuario", typeof(int));
+    
             var nombreParameter = nombre != null ?
                 new ObjectParameter("Nombre", nombre) :
                 new ObjectParameter("Nombre", typeof(string));
@@ -109,21 +127,7 @@ namespace DL
                 new ObjectParameter("FechaModificacion", fechaModificacion) :
                 new ObjectParameter("FechaModificacion", typeof(System.DateTime));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("UsuarioUpdate", nombreParameter, apellidoPaternoParameter, apellidoMaternoParameter, userNameParameter, passwordParameter, correoParameter, estatusParameter, fechaModificacionParameter);
-        }
-    
-        public virtual ObjectResult<UsuarioGetAll_Result> UsuarioGetAll()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<UsuarioGetAll_Result>("UsuarioGetAll");
-        }
-    
-        public virtual ObjectResult<UsuarioGetById_Result> UsuarioGetById(Nullable<int> idUsuario)
-        {
-            var idUsuarioParameter = idUsuario.HasValue ?
-                new ObjectParameter("IdUsuario", idUsuario) :
-                new ObjectParameter("IdUsuario", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<UsuarioGetById_Result>("UsuarioGetById", idUsuarioParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("UsuarioUpdate", idUsuarioParameter, nombreParameter, apellidoPaternoParameter, apellidoMaternoParameter, userNameParameter, passwordParameter, correoParameter, estatusParameter, fechaModificacionParameter);
         }
     }
 }
