@@ -20,6 +20,9 @@
           <Property Name="FechaAlta" Type="date" Nullable="false" />
           <Property Name="FechaModificacion" Type="date" />
         </EntityType>
+        <Function Name="GetUsuarioByName" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="UserName" Type="varchar" Mode="In" />
+        </Function>
         <Function Name="UsuarioADD" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Nombre" Type="varchar" Mode="In" />
           <Parameter Name="ApellidoPaterno" Type="varchar" Mode="In" />
@@ -100,6 +103,9 @@
             <Parameter Name="Estatus" Mode="In" Type="Boolean" />
             <Parameter Name="FechaModificacion" Mode="In" Type="DateTime" />
           </FunctionImport>
+          <FunctionImport Name="GetUsuarioByName" ReturnType="Collection(CatalogoUsuariosModel.GetUsuarioByName_Result)">
+            <Parameter Name="UserName" Mode="In" Type="String" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="UsuarioGetAll_Result">
           <Property Type="Int32" Name="IdUsuario" Nullable="false" />
@@ -124,6 +130,10 @@
           <Property Type="Boolean" Name="Estatus" Nullable="false" />
           <Property Type="DateTime" Name="FechaAlta" Nullable="false" />
           <Property Type="DateTime" Name="FechaModificacion" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="GetUsuarioByName_Result">
+          <Property Type="String" Name="PassWord" Nullable="true" />
+          <Property Type="Boolean" Name="Estatus" Nullable="false" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -182,6 +192,14 @@
             </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="UsuarioUpdate" FunctionName="CatalogoUsuariosModel.Store.UsuarioUpdate" />
+          <FunctionImportMapping FunctionImportName="GetUsuarioByName" FunctionName="CatalogoUsuariosModel.Store.GetUsuarioByName">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="CatalogoUsuariosModel.GetUsuarioByName_Result">
+                <ScalarProperty Name="PassWord" ColumnName="PassWord" />
+                <ScalarProperty Name="Estatus" ColumnName="Estatus" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

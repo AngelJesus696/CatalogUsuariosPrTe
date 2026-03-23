@@ -1,0 +1,33 @@
+﻿
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Login</h2>
+
+<div class="container">
+    <div class="row">
+        <div>
+            <label class="text-center">
+                Ingresa la contraseña
+            </label>
+            @using (@Html.BeginForm("Login", "Login", FormMethod.Post))
+            {
+                <div>
+                    @Html.TextBox("UserName", "", new { @class = "form-control", placeholder = "Username", id = "InptPass" })
+                </div>
+                <div>
+                    @Html.TextBox("Password", "", new { @class = "form-control", placeholder = "Password", id = "InptPass" })
+                    <div class="mt-2" id="divMsg"></div>
+                </div>
+                <div>
+                    <button type="submit" class="btn btn-outline-success">
+                        Ingresar
+                    </button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+

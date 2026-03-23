@@ -129,5 +129,14 @@ namespace DL
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("UsuarioUpdate", idUsuarioParameter, nombreParameter, apellidoPaternoParameter, apellidoMaternoParameter, userNameParameter, passwordParameter, correoParameter, estatusParameter, fechaModificacionParameter);
         }
+    
+        public virtual ObjectResult<GetUsuarioByName_Result> GetUsuarioByName(string userName)
+        {
+            var userNameParameter = userName != null ?
+                new ObjectParameter("UserName", userName) :
+                new ObjectParameter("UserName", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetUsuarioByName_Result>("GetUsuarioByName", userNameParameter);
+        }
     }
 }
